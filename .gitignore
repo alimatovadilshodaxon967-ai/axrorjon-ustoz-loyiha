@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+package-lock.json
+.netlify/
+
+# Environment variables & secrets
+.env
+
+# SQLite local databases
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+dev.db
+backups/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db

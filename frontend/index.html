@@ -1,0 +1,2481 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeMaster LMS — Zamonaviy Ta'lim Platformasi</title>
+  <!-- Google Fonts & Chart.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --secondary: #0ea5e9;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --dark-900: #0f172a;
+      --dark-800: #1e293b;
+      --dark-700: #334155;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --bg-body: #f8fafc;
+      --card-bg: #ffffff;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
+      --transition: all 0.2s ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--dark-900);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--slate-200);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--dark-900);
+      font-weight: 800;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), #818cf8);
+      color: #fff;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    nav.nav-links {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark-700);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-outline {
+      background: transparent;
+      border-color: var(--slate-200);
+      color: var(--dark-800);
+    }
+    .btn-outline:hover {
+      background: var(--slate-100);
+    }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+    .btn-lg {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: var(--radius-md);
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-primary { background: var(--primary-light); color: var(--primary); }
+    .badge-success { background: var(--success-light); color: var(--success); }
+    .badge-warning { background: #fef3c7; color: #b45309; }
+    .badge-danger  { background: var(--danger-light); color: var(--danger); }
+    .badge-admin   { background: #fee2e2; color: #991b1b; }
+    .badge-instructor { background: #e0e7ff; color: #3730a3; }
+    .badge-student { background: #ecfdf5; color: #065f46; }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* HERO BANNER */
+    .hero-banner {
+      background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #6366f1 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-banner h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .hero-banner p {
+      font-size: 16px;
+      color: #c7d2fe;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .hero-stat-item strong {
+      display: block;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .hero-stat-item span {
+      font-size: 13px;
+      color: #a5b4fc;
+    }
+
+    /* FILTERS & SEARCH */
+    .catalog-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-tab {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-200);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark-700);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-tab.active, .filter-tab:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    .search-input-box {
+      position: relative;
+      min-width: 260px;
+    }
+    .search-input-box input {
+      width: 100%;
+      padding: 8px 12px 8px 36px;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      outline: none;
+      transition: var(--transition);
+    }
+    .search-input-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+    .search-input-box svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--slate-400);
+    }
+
+    /* COURSE GRID */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .course-card {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .course-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: #cbd5e1;
+    }
+    .course-thumb {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #e2e8f0;
+    }
+    .course-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .course-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .course-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark-900);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .course-desc {
+      font-size: 14px;
+      color: var(--slate-500);
+      margin-bottom: 16px;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .course-instructor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--slate-100);
+    }
+    .instructor-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .course-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--slate-100);
+    }
+    .course-stats-sm {
+      font-size: 12px;
+      color: var(--slate-500);
+      display: flex;
+      gap: 12px;
+    }
+
+    /* COURSE LEARNING ROOM VIEW */
+    .classroom-container {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      min-height: 680px;
+      box-shadow: var(--shadow-sm);
+    }
+    .classroom-sidebar {
+      background: #fafafa;
+      border-right: 1px solid var(--slate-200);
+      display: flex;
+      flex-direction: column;
+      max-height: 800px;
+      overflow-y: auto;
+    }
+    .syllabus-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--slate-200);
+      background: var(--card-bg);
+    }
+    .syllabus-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .module-item {
+      border-bottom: 1px solid var(--slate-200);
+    }
+    .module-title-bar {
+      padding: 12px 16px;
+      background: #f1f5f9;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark-800);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lesson-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--dark-700);
+      cursor: pointer;
+      border-bottom: 1px solid #f1f5f9;
+      transition: var(--transition);
+    }
+    .lesson-item:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .lesson-item.active {
+      background: #e0e7ff;
+      color: var(--primary);
+      font-weight: 700;
+      border-left: 4px solid var(--primary);
+    }
+    .lesson-item.completed svg {
+      color: var(--success);
+    }
+    .classroom-main {
+      padding: 32px;
+      overflow-y: auto;
+      max-height: 800px;
+    }
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 24px;
+      background: #000;
+      box-shadow: var(--shadow-md);
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .lesson-content-body {
+      background: var(--card-bg);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--dark-800);
+      margin-bottom: 32px;
+    }
+    .lesson-content-body h1, .lesson-content-body h2, .lesson-content-body h3 {
+      margin: 20px 0 10px 0;
+      color: var(--dark-900);
+    }
+    .lesson-content-body pre {
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      margin: 16px 0;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+    }
+    .lesson-content-body code {
+      font-family: 'Fira Code', monospace;
+      background: #f1f5f9;
+      color: #be185d;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .lesson-content-body pre code {
+      background: transparent;
+      color: #f8fafc;
+      padding: 0;
+    }
+    .lesson-action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid var(--slate-200);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* DASHBOARD & CHARTS */
+    .dashboard-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-card .stat-label {
+      font-size: 13px;
+      color: var(--slate-500);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .stat-card .stat-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark-900);
+    }
+    .charts-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .chart-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    /* DATA TABLES */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--dark-700);
+      border-bottom: 1px solid var(--slate-200);
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--slate-100);
+      color: var(--dark-800);
+    }
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* MODALS */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-backdrop.show {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 480px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: modalSlide 0.2s ease-out;
+    }
+    @keyframes modalSlide {
+      from { transform: translateY(12px) scale(0.98); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--slate-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--slate-400);
+    }
+    .modal-close-btn:hover {
+      color: var(--dark-900);
+    }
+    .modal-body {
+      padding: 24px;
+    }
+
+    /* FORMS & OTP INPUT */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark-700);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      outline: none;
+      transition: var(--transition);
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    /* OTP 6-DIGIT BOXES */
+    .otp-inputs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .otp-digit {
+      width: 48px;
+      height: 56px;
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      border: 2px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: var(--transition);
+      background: #fafafa;
+    }
+    .otp-digit:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+
+    /* TOAST NOTIFICATIONS */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 2000;
+    }
+    .toast {
+      background: var(--dark-900);
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.2s ease-out;
+      max-width: 380px;
+    }
+    @keyframes toastIn {
+      from { transform: translateX(20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-success { background: #065f46; border-left: 4px solid var(--success); }
+    .toast-error   { background: #991b1b; border-left: 4px solid var(--danger); }
+    .toast-info    { background: #1e1b4b; border-left: 4px solid var(--primary); }
+
+    /* CERTIFICATE CARD STYLING */
+    .certificate-card {
+      border: 8px double #d97706;
+      background: #fffbeb;
+      padding: 40px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .certificate-seal {
+      width: 72px;
+      height: 72px;
+      background: #d97706;
+      color: white;
+      border-radius: 50%;
+      margin: 0 auto 16px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 0 0 6px #fde68a;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark-900);
+      color: var(--slate-400);
+      padding: 32px 24px;
+      margin-top: auto;
+      font-size: 13px;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .classroom-container {
+        grid-template-columns: 1fr;
+      }
+      .charts-row {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER NAVIGATION -->
+  <header>
+    <div class="header-inner">
+      <div class="logo" onclick="switchView('catalog')">
+        <div class="logo-icon">CM</div>
+        <div>
+          <span>CodeMaster</span>
+          <span style="color: var(--primary); font-size: 12px; display: block; font-weight: 600; margin-top: -4px;">LMS PLATFORM</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" id="nav-catalog" onclick="switchView('catalog')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Kurslar Katalogi
+        </button>
+        <button class="nav-btn" id="nav-my-courses" onclick="switchView('my-courses')" style="display: none;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Mening Kurslarim
+        </button>
+        <button class="nav-btn" id="nav-dashboard" onclick="switchView('dashboard')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Dashboard & Tahlil
+        </button>
+        <button class="nav-btn" id="nav-verify-cert" onclick="openCertVerifyModal()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          Sertifikat Tekshirish
+        </button>
+      </nav>
+
+      <div class="user-actions" id="user-actions-container">
+        <!-- Will be populated dynamically via JavaScript -->
+        <button class="btn btn-outline" onclick="openModal('loginModal')">Kirish</button>
+        <button class="btn btn-primary" onclick="openModal('registerModal')">Ro‘yxatdan o‘tish</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main>
+    <!-- VIEW 1: COURSE CATALOG -->
+    <section id="view-catalog">
+      <div class="hero-banner">
+        <span class="badge badge-warning" style="margin-bottom: 12px;">SQLite Powered REST Architecture</span>
+        <h1>Kelajak Kasblarini CodeMaster LMS Bilan O‘rganing</h1>
+        <p>Zamonaviy dasturlash, sun'iy intellekt va backend texnologiyalari. Barcha kurslar amaliy topshiriqlar, testlar va tasdiqlanuvchi sertifikatlar bilan ta'minlangan.</p>
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <strong id="stat-courses-count">3+</strong>
+            <span>Professional Kurslar</span>
+          </div>
+          <div class="hero-stat-item">
+            <strong>100%</strong>
+            <span>SQLite Tranzaksiyalar</span>
+          </div>
+          <div class="hero-stat-item">
+            <strong>OTP</strong>
+            <span>Vaqtinchalik Email Tasdiqlash</span>
+          </div>
+          <div class="hero-stat-item">
+            <strong>REST API</strong>
+            <span>Express & Prisma ORM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="catalog-bar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterCourses('ALL', this)">Barchasi</button>
+          <button class="filter-tab" onclick="filterCourses('Dasturlash', this)">Dasturlash</button>
+          <button class="filter-tab" onclick="filterCourses('Frontend', this)">Frontend</button>
+          <button class="filter-tab" onclick="filterCourses('Sun\'iy intellekt', this)">Sun'iy intellekt</button>
+        </div>
+        <div class="search-input-box">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="course-search-input" placeholder="Kurs nomini qidirish..." oninput="handleSearchCourses()">
+        </div>
+      </div>
+
+      <!-- Course Cards Grid -->
+      <div class="course-grid" id="course-list-container">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: MY ENROLLED COURSES -->
+    <section id="view-my-courses" style="display: none;">
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 24px; font-weight: 800;">Mening Kurslarim</h2>
+        <p style="color: var(--slate-500); font-size: 14px;">Siz yozilgan va hozirda o‘rganayotgan barcha ta'lim dasturlari.</p>
+      </div>
+      <div class="course-grid" id="my-course-list-container">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 3: CLASSROOM & LESSON PLAYER -->
+    <section id="view-classroom" style="display: none;">
+      <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <button class="btn btn-outline btn-sm" onclick="switchView('catalog')">
+          ← Katalogga qaytish
+        </button>
+        <div id="classroom-progress-badge"></div>
+      </div>
+
+      <div class="classroom-container">
+        <!-- Sidebar Syllabus -->
+        <div class="classroom-sidebar">
+          <div class="syllabus-header">
+            <h3 id="class-course-title">Yuklanmoqda...</h3>
+            <div style="background: var(--slate-100); height: 8px; border-radius: 999px; overflow: hidden; margin-top: 8px;">
+              <div id="class-course-progress-bar" style="background: var(--success); height: 100%; width: 0%; transition: width 0.3s;"></div>
+            </div>
+          </div>
+          <div id="classroom-modules-accordion">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Main Classroom Content -->
+        <div class="classroom-main">
+          <div id="lesson-video-box" class="video-wrapper" style="display: none;">
+            <iframe id="lesson-video-frame" src="" allowfullscreen></iframe>
+          </div>
+
+          <h1 id="lesson-main-title" style="font-size: 24px; font-weight: 800; margin-bottom: 16px;">Darsni tanlang</h1>
+          <div id="lesson-main-content" class="lesson-content-body">
+            Iltimos, chap tarafdagi modul ro‘yxatidan darsni bosing.
+          </div>
+
+          <!-- Assignment & Quiz Section for active lesson -->
+          <div id="lesson-interactive-section" style="margin-top: 24px;"></div>
+
+          <!-- Bottom Lesson Navigation -->
+          <div class="lesson-action-bar">
+            <button class="btn btn-outline" id="btn-prev-lesson" onclick="navigateLesson('prev')" disabled>
+              ← Oldingi Dars
+            </button>
+            <button class="btn btn-success" id="btn-complete-lesson" onclick="markActiveLessonComplete()">
+              ✓ Darsni Tamomlash (+Progress)
+            </button>
+            <button class="btn btn-primary" id="btn-next-lesson" onclick="navigateLesson('next')" disabled>
+              Keyingi Dars →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: DASHBOARD & ANALYTICS -->
+    <section id="view-dashboard" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h2 style="font-size: 24px; font-weight: 800;">Boshqaruv Paneli & Tahlillar</h2>
+          <p style="color: var(--slate-500); font-size: 14px;">SQLite asosidagi real vaqt statistikasi va metrikalar.</p>
+        </div>
+        <div id="admin-actions-bar" style="display: none; gap: 8px;">
+          <button class="btn btn-outline btn-sm" onclick="triggerDatabaseBackup()">
+            💾 SQLite Backup Yaratish
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('createCourseModal')">
+            + Yangi Kurs Qo‘shish
+          </button>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="dashboard-stats-grid" id="dashboard-stats-container">
+        <!-- Populated via JS -->
+      </div>
+
+      <!-- Chart.js Charts -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3 id="chart-main-title">Talabalar Faolligi va Yozilishlar Dinamikasi</h3>
+          <canvas id="chart-enrollments" height="120"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3 id="chart-secondary-title">Kurs Yo‘nalishlari Taqsimoti</h3>
+          <canvas id="chart-categories" height="120"></canvas>
+        </div>
+      </div>
+
+      <!-- Instructor / Admin Tables: Submissions & Audit Logs -->
+      <div id="admin-dashboard-tables" style="display: none;">
+        <h3 style="font-size: 18px; font-weight: 700; margin: 24px 0 12px 0;">Talabalar Topshiriqlari (Uyga vazifalar)</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Talaba</th>
+                <th>Kurs / Dars</th>
+                <th>Topshiriq</th>
+                <th>Holat</th>
+                <th>Ball</th>
+                <th>Amal</th>
+              </tr>
+            </thead>
+            <tbody id="table-submissions-body">
+              <tr><td colspan="6" style="text-align: center; color: var(--slate-400);">Topshiriqlar yuklanmoqda...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size: 18px; font-weight: 700; margin: 24px 0 12px 0;">SQLite Tizim Audit Loglari (AuditLog Jadvali)</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Vaqt</th>
+                <th>Foydalanuvchi</th>
+                <th>Amal (Action)</th>
+                <th>Ob'yekt</th>
+                <th>IP Manzil</th>
+                <th>Tafsilotlar</th>
+              </tr>
+            </thead>
+            <tbody id="table-audit-body">
+              <tr><td colspan="6" style="text-align: center; color: var(--slate-400);">Audit yozuvlari yuklanmoqda...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size: 18px; font-weight: 700; margin: 24px 0 12px 0;">SQLite Ma'lumotlar Bazasi Zaxira Nusxalari (Backups)</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Fayl Nomi</th>
+                <th>Hajmi (KB)</th>
+                <th>Yaratilgan Sana</th>
+                <th>Holat</th>
+              </tr>
+            </thead>
+            <tbody id="table-backups-body">
+              <tr><td colspan="4" style="text-align: center; color: var(--slate-400);">Zaxira nusxalar ro‘yxati bo‘sh.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALS -->
+
+  <!-- 1. LOGIN MODAL -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>CodeMaster Tizimiga Kirish</h3>
+        <button class="modal-close-btn" onclick="closeModal('loginModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handleLoginSubmit(event)">
+          <div class="form-group">
+            <label>Email Manzili</label>
+            <input type="email" id="login-email" class="form-control" required placeholder="admin@codemaster.uz">
+          </div>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="margin: 0;">Parol</label>
+              <a href="#" style="font-size: 12px; color: var(--primary); text-decoration: none;" onclick="openForgotPasswordModal()">Parolni unutdingizmi?</a>
+            </div>
+            <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Kirish</button>
+        </form>
+
+        <div style="margin-top: 20px; text-align: center; font-size: 13px; color: var(--slate-500);">
+          Akkauntingiz yo‘qmi? <a href="#" style="color: var(--primary); font-weight: 600;" onclick="closeModal('loginModal'); openModal('registerModal');">Ro‘yxatdan o‘ting</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. REGISTER MODAL (Initiates OTP) -->
+  <div class="modal-backdrop" id="registerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Ro‘yxatdan O‘tish</h3>
+        <button class="modal-close-btn" onclick="closeModal('registerModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--slate-500); margin-bottom: 16px;">
+          Ro‘yxatdan o‘tgach, emailingizga 5 daqiqa amal qiluvchi 6 xonali OTP kod yuboriladi.
+        </p>
+        <form onsubmit="handleRegisterSubmit(event)">
+          <div class="form-group">
+            <label>To‘liq Ismingiz</label>
+            <input type="text" id="reg-name" class="form-control" required placeholder="Masalan: Sardor Komilov">
+          </div>
+          <div class="form-group">
+            <label>Email Manzili</label>
+            <input type="email" id="reg-email" class="form-control" required placeholder="namuna@gmail.com">
+          </div>
+          <div class="form-group">
+            <label>Parol (kamida 6 ta belgi)</label>
+            <input type="password" id="reg-password" class="form-control" required minlength="6" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>Foydalanuvchi Roli</label>
+            <select id="reg-role" class="form-control">
+              <option value="STUDENT">Talaba (Student)</option>
+              <option value="INSTRUCTOR">O‘qituvchi (Instructor)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;" id="btn-reg-submit">
+            Davom Etish (OTP Yuborish)
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. EMAIL OTP VERIFICATION MODAL (SECTION 3 REQUIREMENTS) -->
+  <div class="modal-backdrop" id="otpModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Emailni Tasdiqlash (OTP)</h3>
+        <button class="modal-close-btn" onclick="closeModal('otpModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <div style="width: 56px; height: 56px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+
+        <p style="font-size: 14px; color: var(--dark-800); margin-bottom: 6px;">
+          Tasdiqlash kodi quyidagi emailga yuborildi:
+        </p>
+        <p style="font-weight: 700; color: var(--primary);" id="otp-target-email"></p>
+
+        <!-- Dev OTP Quick Helper Pill -->
+        <div id="dev-otp-display" style="display: none; margin: 10px 0; background: #fef3c7; color: #92400e; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;"></div>
+
+        <!-- 6-digit OTP Inputs -->
+        <div class="otp-inputs">
+          <input type="text" maxlength="1" class="otp-digit" id="otp-1" oninput="handleOtpInput(this, 'otp-2', null)">
+          <input type="text" maxlength="1" class="otp-digit" id="otp-2" oninput="handleOtpInput(this, 'otp-3', 'otp-1')">
+          <input type="text" maxlength="1" class="otp-digit" id="otp-3" oninput="handleOtpInput(this, 'otp-4', 'otp-2')">
+          <input type="text" maxlength="1" class="otp-digit" id="otp-4" oninput="handleOtpInput(this, 'otp-5', 'otp-3')">
+          <input type="text" maxlength="1" class="otp-digit" id="otp-5" oninput="handleOtpInput(this, 'otp-6', 'otp-4')">
+          <input type="text" maxlength="1" class="otp-digit" id="otp-6" oninput="handleOtpInput(this, null, 'otp-5')">
+        </div>
+
+        <!-- Countdown Timers and Attempt Counter -->
+        <div style="font-size: 13px; color: var(--slate-500); margin-bottom: 16px;">
+          Kod amal qilish muddati: <strong id="otp-timer" style="color: var(--danger);">05:00</strong>
+        </div>
+
+        <div id="otp-attempt-badge" style="font-size: 12px; color: var(--warning); margin-bottom: 16px; font-weight: 600;"></div>
+
+        <button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="submitOtpVerification()">
+          Kodni Tasdiqlash
+        </button>
+
+        <button class="btn btn-outline btn-sm" id="btn-resend-otp" onclick="handleResendOtp()" disabled>
+          Qayta yuborish (60s)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. QUIZ MODAL -->
+  <div class="modal-backdrop" id="quizModal">
+    <div class="modal-content" style="max-width: 680px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="quiz-modal-title">Test Sinovi</h3>
+          <span style="font-size: 12px; color: var(--slate-500);" id="quiz-modal-subtitle"></span>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('quizModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="quiz-modal-body">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. CERTIFICATE VIEWER / VERIFY MODAL -->
+  <div class="modal-backdrop" id="certModal">
+    <div class="modal-content" style="max-width: 720px;">
+      <div class="modal-header">
+        <h3>Rasmiy Sertifikat Tekshiruvi</h3>
+        <button class="modal-close-btn" onclick="closeModal('certModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+          <input type="text" id="cert-search-code" class="form-control" placeholder="Sertifikat kodini kiriting (masalan: CM-2026-XXXXX)">
+          <button class="btn btn-primary" onclick="lookupCertificate()">Tekshirish</button>
+        </div>
+        <div id="cert-display-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. CREATE COURSE MODAL (INSTRUCTOR / ADMIN) -->
+  <div class="modal-backdrop" id="createCourseModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Yangi Kurs Qo‘shish</h3>
+        <button class="modal-close-btn" onclick="closeModal('createCourseModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handleCreateCourseSubmit(event)">
+          <div class="form-group">
+            <label>Kurs Nomi</label>
+            <input type="text" id="new-course-title" class="form-control" required placeholder="Vue.js va Nuxt.js Asoslari">
+          </div>
+          <div class="form-group">
+            <label>Yo‘nalish (Kategoriya)</label>
+            <input type="text" id="new-course-category" class="form-control" value="Dasturlash" required>
+          </div>
+          <div class="form-group">
+            <label>Daraja</label>
+            <select id="new-course-level" class="form-control">
+              <option value="BEGINNER">Boshlang‘ich (Beginner)</option>
+              <option value="INTERMEDIATE">O‘rta (Intermediate)</option>
+              <option value="ADVANCED">Murakkab (Advanced)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Kurs Tavsifi</label>
+            <textarea id="new-course-desc" class="form-control" rows="3" required placeholder="Kurs haqida qisqacha ma'lumot..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Rasm URL (Thumbnail)</label>
+            <input type="url" id="new-course-thumb" class="form-control" placeholder="https://images.unsplash.com/photo-...">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Kursni Yaratish (SQLite)</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <strong>CodeMaster LMS</strong> — SQLite Powered Full-Stack Learning Management System.
+        <div style="font-size: 11px; color: var(--slate-500); margin-top: 4px;">
+          Node.js • Express.js • Prisma ORM • SQLite • Vanilla JS • Nodemailer
+        </div>
+      </div>
+      <div>
+        © 2026 CodeMaster LMS. Barcha huquqlar himoyalangan.
+      </div>
+    </div>
+  </footer>
+
+  <!-- VANILLA JAVASCRIPT LOGIC -->
+  <script>
+    // Global State
+    let currentUser = null;
+    let coursesData = [];
+    let currentCategoryFilter = 'ALL';
+    let currentClassroomCourse = null;
+    let activeLesson = null;
+    let activeQuizData = null;
+    let otpCooldownTimer = null;
+    let otpExpiryTimer = null;
+    let activeOtpEmail = '';
+
+    // Chart.js instances
+    let enrollmentsChartInstance = null;
+    let categoriesChartInstance = null;
+
+    // Initialize application on DOM load
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuthStatus();
+      await loadCourses();
+      setupOtpPasteHandler();
+    });
+
+    // ==========================================
+    // NOTIFICATIONS & TOASTS
+    // ==========================================
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // ==========================================
+    // MODAL HELPERS
+    // ==========================================
+    function openModal(id) {
+      document.getElementById(id).classList.add('show');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('show');
+    }
+
+    // ==========================================
+    // AUTHENTICATION & SESSIONS
+    // ==========================================
+    async function checkAuthStatus() {
+      try {
+        const res = await fetch('/api/auth/me', { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          currentUser = data.user;
+          renderUserHeader();
+        } else {
+          currentUser = null;
+          renderUserHeader();
+        }
+      } catch (err) {
+        currentUser = null;
+        renderUserHeader();
+      }
+    }
+
+    function renderUserHeader() {
+      const container = document.getElementById('user-actions-container');
+      const myCoursesBtn = document.getElementById('nav-my-courses');
+      const adminActionsBar = document.getElementById('admin-actions-bar');
+      const adminTables = document.getElementById('admin-dashboard-tables');
+
+      if (currentUser) {
+        myCoursesBtn.style.display = 'inline-flex';
+        const roleBadgeClass = currentUser.role === 'ADMIN' ? 'badge-admin' : currentUser.role === 'INSTRUCTOR' ? 'badge-instructor' : 'badge-student';
+
+        if (['ADMIN', 'INSTRUCTOR'].includes(currentUser.role)) {
+          if (adminActionsBar) adminActionsBar.style.display = 'flex';
+          if (adminTables) adminTables.style.display = 'block';
+        } else {
+          if (adminActionsBar) adminActionsBar.style.display = 'none';
+          if (adminTables) adminTables.style.display = 'none';
+        }
+
+        container.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="badge ${roleBadgeClass}">${currentUser.role}</span>
+            <span style="font-size: 13px; font-weight: 700;">${currentUser.name}</span>
+            <button class="btn btn-outline btn-sm" onclick="handleLogout()">Chiqish</button>
+          </div>
+        `;
+      } else {
+        myCoursesBtn.style.display = 'none';
+        if (adminActionsBar) adminActionsBar.style.display = 'none';
+        if (adminTables) adminTables.style.display = 'none';
+        container.innerHTML = `
+          <button class="btn btn-outline" onclick="openModal('loginModal')">Kirish</button>
+          <button class="btn btn-primary" onclick="openModal('registerModal')">Ro‘yxatdan o‘tish</button>
+        `;
+      }
+    }
+
+    async function quickLogin(email, password) {
+      document.getElementById('login-email').value = email;
+      document.getElementById('login-password').value = password;
+      await handleLoginSubmit(new Event('submit'));
+    }
+
+    async function handleLoginSubmit(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          currentUser = data.user;
+          renderUserHeader();
+          closeModal('loginModal');
+          showToast(`Xush kelibsiz, ${currentUser.name}!`, 'success');
+          await loadCourses();
+        } else if (data.requiresVerification) {
+          closeModal('loginModal');
+          openOtpModal(data.email);
+          showToast(data.message, 'info');
+        } else {
+          showToast(data.message || 'Kirishda xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server bilan bog‘lanishda xatolik yuz berdi.', 'error');
+      }
+    }
+
+    async function handleLogout() {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+        currentUser = null;
+        renderUserHeader();
+        switchView('catalog');
+        showToast('Tizimdan chiqildi.', 'info');
+        await loadCourses();
+      } catch (err) {
+        showToast('Chiqishda xatolik.', 'error');
+      }
+    }
+
+    // ==========================================
+    // REGISTRATION & OTP VERIFICATION (SECTION 3)
+    // ==========================================
+    async function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const role = document.getElementById('reg-role').value;
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ name, email, password, role }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          closeModal('registerModal');
+          openOtpModal(email, data.data?.devOtp);
+          showToast(data.message, 'success');
+        } else {
+          showToast(data.message || 'Ro‘yxatdan o‘tishda xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    function openOtpModal(email, devOtp = null) {
+      activeOtpEmail = email;
+      document.getElementById('otp-target-email').textContent = email;
+      const devBox = document.getElementById('dev-otp-display');
+
+      if (devOtp) {
+        devBox.style.display = 'block';
+        devBox.innerHTML = `Dev Simulyator: Tasdiqlash kodi 👉 <strong>${devOtp}</strong> (Avto-to'ldirish uchun bosing)`;
+        devBox.onclick = () => fillOtp(devOtp);
+      } else {
+        devBox.style.display = 'none';
+      }
+
+      // Reset digit inputs
+      for (let i = 1; i <= 6; i++) {
+        const input = document.getElementById(`otp-${i}`);
+        input.value = '';
+      }
+      document.getElementById('otp-1').focus();
+
+      // Start 5-minute expiry countdown
+      startOtpExpiryCountdown(300);
+      // Start 60-second resend cooldown
+      startOtpResendCooldown(60);
+
+      openModal('otpModal');
+    }
+
+    function fillOtp(code) {
+      const digits = String(code).split('');
+      for (let i = 0; i < 6; i++) {
+        document.getElementById(`otp-${i + 1}`).value = digits[i] || '';
+      }
+    }
+
+    function handleOtpInput(curr, nextId, prevId) {
+      if (curr.value.length === 1 && nextId) {
+        document.getElementById(nextId).focus();
+      }
+    }
+
+    function setupOtpPasteHandler() {
+      const firstInput = document.getElementById('otp-1');
+      if (!firstInput) return;
+      firstInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text').trim();
+        if (/^\d{6}$/.test(pasted)) {
+          fillOtp(pasted);
+          document.getElementById('otp-6').focus();
+        }
+      });
+    }
+
+    function startOtpExpiryCountdown(seconds) {
+      if (otpExpiryTimer) clearInterval(otpExpiryTimer);
+      let rem = seconds;
+      const timerEl = document.getElementById('otp-timer');
+
+      otpExpiryTimer = setInterval(() => {
+        rem--;
+        if (rem <= 0) {
+          clearInterval(otpExpiryTimer);
+          timerEl.textContent = 'Muddati tugadi (00:00)';
+          showToast('OTP muddati tugadi. Yangi kod so‘rang.', 'error');
+        } else {
+          const m = String(Math.floor(rem / 60)).padStart(2, '0');
+          const s = String(rem % 60).padStart(2, '0');
+          timerEl.textContent = `${m}:${s}`;
+        }
+      }, 1000);
+    }
+
+    function startOtpResendCooldown(seconds) {
+      if (otpCooldownTimer) clearInterval(otpCooldownTimer);
+      let rem = seconds;
+      const btn = document.getElementById('btn-resend-otp');
+      btn.disabled = true;
+
+      otpCooldownTimer = setInterval(() => {
+        rem--;
+        if (rem <= 0) {
+          clearInterval(otpCooldownTimer);
+          btn.disabled = false;
+          btn.textContent = 'Kodni qayta yuborish';
+        } else {
+          btn.textContent = `Qayta yuborish (${rem}s)`;
+        }
+      }, 1000);
+    }
+
+    async function handleResendOtp() {
+      try {
+        const res = await fetch('/api/auth/resend-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: activeOtpEmail }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(data.message, 'success');
+          if (data.devOtp) {
+            const devBox = document.getElementById('dev-otp-display');
+            devBox.style.display = 'block';
+            devBox.innerHTML = `Yangi Kod 👉 <strong>${data.devOtp}</strong> (Avto-to'ldirish uchun bosing)`;
+            devBox.onclick = () => fillOtp(data.devOtp);
+          }
+          startOtpExpiryCountdown(300);
+          startOtpResendCooldown(60);
+        } else {
+          showToast(data.message || 'Xatolik yuz berdi.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    async function submitOtpVerification() {
+      let otpCode = '';
+      for (let i = 1; i <= 6; i++) {
+        otpCode += document.getElementById(`otp-${i}`).value.trim();
+      }
+
+      if (otpCode.length !== 6) {
+        showToast('6 xonali OTP kodini to‘liq kiriting.', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email: activeOtpEmail, otp: otpCode }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          clearInterval(otpExpiryTimer);
+          clearInterval(otpCooldownTimer);
+          closeModal('otpModal');
+          currentUser = data.user;
+          renderUserHeader();
+          showToast('Email tasdiqlandi! Akkauntingiz faollashtirildi.', 'success');
+          await loadCourses();
+        } else {
+          showToast(data.message || 'OTP noto‘g‘ri.', 'error');
+          if (data.remainingAttempts !== undefined) {
+            document.getElementById('otp-attempt-badge').textContent = `Qolgan urinishlar: ${data.remainingAttempts} ta`;
+          }
+          if (data.expired || data.locked) {
+            closeModal('otpModal');
+          }
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    // ==========================================
+    // COURSE CATALOG & DISPLAY
+    // ==========================================
+    async function loadCourses() {
+      try {
+        const res = await fetch('/api/courses', { credentials: 'include' });
+        const data = await res.json();
+        if (data.success) {
+          coursesData = data.courses;
+          renderCourseList(coursesData);
+          document.getElementById('stat-courses-count').textContent = `${coursesData.length}+`;
+        }
+      } catch (err) {
+        console.error('Courses load error:', err);
+      }
+    }
+
+    function renderCourseList(courses) {
+      const container = document.getElementById('course-list-container');
+      if (!courses || courses.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--slate-400);">Kurslar topilmadi.</div>`;
+        return;
+      }
+
+      container.innerHTML = courses.map((course) => {
+        const enrolled = course.userEnrollment;
+        const progress = enrolled ? enrolled.progressPercent : 0;
+
+        return `
+          <div class="course-card">
+            <img class="course-thumb" src="${course.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'}" alt="${course.title}">
+            <div class="course-body">
+              <div class="course-meta">
+                <span class="badge badge-primary">${course.category}</span>
+                <span class="badge badge-warning">${course.level}</span>
+              </div>
+              <h3 class="course-title">${course.title}</h3>
+              <p class="course-desc">${course.description}</p>
+              
+              <div class="course-instructor">
+                <img class="instructor-avatar" src="${course.instructor.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" alt="${course.instructor.name}">
+                <span style="font-size: 13px; font-weight: 600;">${course.instructor.name}</span>
+              </div>
+
+              ${enrolled ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                    <span>O‘zlashtirish:</span>
+                    <strong>${progress}%</strong>
+                  </div>
+                  <div style="background: var(--slate-100); height: 6px; border-radius: 999px; overflow: hidden;">
+                    <div style="background: var(--success); height: 100%; width: ${progress}%;"></div>
+                  </div>
+                </div>
+              ` : ''}
+
+              <div class="course-footer">
+                <div class="course-stats-sm">
+                  <span>📚 ${course.totalLessons} ta dars</span>
+                  <span>📝 ${course.totalQuizzes} ta test</span>
+                </div>
+                ${enrolled ? `
+                  <button class="btn btn-success btn-sm" onclick="openClassroom('${course.slug}')">Darsga Kirish</button>
+                ` : `
+                  <button class="btn btn-primary btn-sm" onclick="enrollCourse('${course.id}', '${course.slug}')">Yozilish (Bepul)</button>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterCourses(category, el) {
+      currentCategoryFilter = category;
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+
+      if (category === 'ALL') {
+        renderCourseList(coursesData);
+      } else {
+        const filtered = coursesData.filter(c => c.category === category);
+        renderCourseList(filtered);
+      }
+    }
+
+    function handleSearchCourses() {
+      const q = document.getElementById('course-search-input').value.toLowerCase().trim();
+      const filtered = coursesData.filter(c =>
+        c.title.toLowerCase().includes(q) || c.description.toLowerCase().includes(q)
+      );
+      renderCourseList(filtered);
+    }
+
+    // ==========================================
+    // ENROLLMENT ACTION
+    // ==========================================
+    async function enrollCourse(courseId, slug) {
+      if (!currentUser) {
+        openModal('loginModal');
+        showToast('Iltimos, avval tizimga kiring.', 'info');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/enrollments/enroll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ courseId }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(data.message, 'success');
+          await loadCourses();
+          openClassroom(slug);
+        } else {
+          showToast(data.message || 'Yozilishda xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    // ==========================================
+    // CLASSROOM & LESSON PLAYER
+    // ==========================================
+    async function openClassroom(courseSlug) {
+      try {
+        const res = await fetch(`/api/courses/${courseSlug}`, { credentials: 'include' });
+        const data = await res.json();
+
+        if (data.success) {
+          currentClassroomCourse = data.course;
+          const completedIds = data.completedLessonIds || [];
+
+          document.getElementById('class-course-title').textContent = currentClassroomCourse.title;
+          const progressPercent = data.enrollment ? data.enrollment.progressPercent : 0;
+          document.getElementById('class-course-progress-bar').style.width = `${progressPercent}%`;
+
+          // Render modules accordion
+          const accordion = document.getElementById('classroom-modules-accordion');
+          accordion.innerHTML = currentClassroomCourse.modules.map((m) => {
+            const lessonsHtml = m.lessons.map((l) => {
+              const isDone = completedIds.includes(l.id);
+              return `
+                <div class="lesson-item ${isDone ? 'completed' : ''}" id="lesson-btn-${l.id}" onclick="loadLessonContent('${l.id}')">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    ${isDone ? '<path d="M20 6 9 17l-5-5"/>' : '<polygon points="5 3 19 12 5 21 5 3"/>'}
+                  </svg>
+                  <span style="flex: 1;">${l.order}. ${l.title}</span>
+                  ${l.isFreePreview ? '<span class="badge badge-success" style="font-size: 9px;">Preview</span>' : ''}
+                </div>
+              `;
+            }).join('');
+
+            const quizzesHtml = (m.quizzes || []).map((q) => `
+              <div class="lesson-item" style="color: #7c3aed; font-weight: 600;" onclick="openQuizModal('${q.id}')">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Imtihon: ${q.title}</span>
+              </div>
+            `).join('');
+
+            return `
+              <div class="module-item">
+                <div class="module-title-bar">
+                  <span>${m.title}</span>
+                </div>
+                ${lessonsHtml}
+                ${quizzesHtml}
+              </div>
+            `;
+          }).join('');
+
+          switchView('classroom');
+
+          // Auto load first lesson
+          if (currentClassroomCourse.modules.length > 0 && currentClassroomCourse.modules[0].lessons.length > 0) {
+            loadLessonContent(currentClassroomCourse.modules[0].lessons[0].id);
+          }
+        }
+      } catch (err) {
+        showToast('Kursni ochishda xatolik yuz berdi.', 'error');
+      }
+    }
+
+    async function loadLessonContent(lessonId) {
+      try {
+        const res = await fetch(`/api/lessons/${lessonId}`, { credentials: 'include' });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          activeLesson = data.lesson;
+
+          // Update active highlight in sidebar
+          document.querySelectorAll('.lesson-item').forEach(el => el.classList.remove('active'));
+          const btn = document.getElementById(`lesson-btn-${lessonId}`);
+          if (btn) btn.classList.add('active');
+
+          document.getElementById('lesson-main-title').textContent = activeLesson.title;
+          document.getElementById('lesson-main-content').innerHTML = formatMarkdown(activeLesson.content);
+
+          const videoBox = document.getElementById('lesson-video-box');
+          const videoFrame = document.getElementById('lesson-video-frame');
+          if (activeLesson.videoUrl) {
+            videoBox.style.display = 'block';
+            videoFrame.src = activeLesson.videoUrl;
+          } else {
+            videoBox.style.display = 'none';
+            videoFrame.src = '';
+          }
+
+          // Complete button state
+          const compBtn = document.getElementById('btn-complete-lesson');
+          if (activeLesson.isCompleted) {
+            compBtn.innerHTML = '✓ Tamomlangan';
+            compBtn.classList.remove('btn-success');
+            compBtn.classList.add('btn-outline');
+          } else {
+            compBtn.innerHTML = '✓ Darsni Tamomlash (+Progress)';
+            compBtn.classList.remove('btn-outline');
+            compBtn.classList.add('btn-success');
+          }
+
+          // Prev / Next button states
+          document.getElementById('btn-prev-lesson').disabled = !activeLesson.prevLessonId;
+          document.getElementById('btn-next-lesson').disabled = !activeLesson.nextLessonId;
+
+          // Render assignments
+          renderInteractiveAssignments(activeLesson.assignments || []);
+        } else {
+          showToast(data.message || 'Darsni ochishda ruxsat yo‘q.', 'error');
+        }
+      } catch (err) {
+        showToast('Dars yuklanmadi.', 'error');
+      }
+    }
+
+    function renderInteractiveAssignments(assignments) {
+      const container = document.getElementById('lesson-interactive-section');
+      if (!assignments || assignments.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = assignments.map((a) => {
+        const submission = a.submissions && a.submissions.length > 0 ? a.submissions[0] : null;
+
+        return `
+          <div style="background: #f8fafc; border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 20px; margin-top: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 16px; font-weight: 700;">Amaliy Topshiriq: ${a.title}</h4>
+              <span class="badge badge-primary">Maksimal: ${a.maxScore} ball</span>
+            </div>
+            <p style="font-size: 14px; color: var(--dark-700); margin-bottom: 16px;">${a.instructions}</p>
+
+            ${submission ? `
+              <div style="background: white; border: 1px solid var(--slate-200); padding: 14px; border-radius: var(--radius-sm);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                  <span class="badge ${submission.status === 'GRADED' ? 'badge-success' : 'badge-warning'}">
+                    ${submission.status === 'GRADED' ? 'BAHOLANDI' : 'TEKSHIRILMOQDA'}
+                  </span>
+                  ${submission.score !== null ? `<strong>Natija: ${submission.score} / ${a.maxScore} ball</strong>` : ''}
+                </div>
+                ${submission.feedback ? `<p style="font-size: 13px; color: #065f46; margin-top: 6px;"><strong>O‘qituvchi izohi:</strong> ${submission.feedback}</p>` : ''}
+              </div>
+            ` : `
+              <form onsubmit="handleSubmitAssignment(event, '${a.id}')">
+                <div class="form-group">
+                  <label>Yechim Kodi yoki Matn</label>
+                  <textarea id="assign-text-${a.id}" class="form-control" rows="4" required placeholder="Kodingizni yoki izohingizni kiriting..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>GitHub yoki Demo Link (Ixtiyoriy)</label>
+                  <input type="url" id="assign-url-${a.id}" class="form-control" placeholder="https://github.com/username/project">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Topshiriqni Yuborish</button>
+              </form>
+            `}
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleSubmitAssignment(e, assignmentId) {
+      e.preventDefault();
+      const text = document.getElementById(`assign-text-${assignmentId}`).value;
+      const url = document.getElementById(`assign-url-${assignmentId}`).value;
+
+      try {
+        const res = await fetch('/api/assignments/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            assignmentId,
+            submissionText: text,
+            submissionUrl: url,
+          }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(data.message, 'success');
+          loadLessonContent(activeLesson.id);
+        } else {
+          showToast(data.message || 'Topshirishda xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    async function markActiveLessonComplete() {
+      if (!activeLesson) return;
+
+      try {
+        const res = await fetch('/api/enrollments/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ lessonId: activeLesson.id }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(data.message, 'success');
+          document.getElementById('class-course-progress-bar').style.width = `${data.progressPercent}%`;
+
+          // Mark icon in sidebar
+          const item = document.getElementById(`lesson-btn-${activeLesson.id}`);
+          if (item) item.classList.add('completed');
+
+          if (data.certificate) {
+            showToast(`Tabriklaymiz! Sertifikat kodingiz: ${data.certificate.certificateCode}`, 'success');
+          }
+
+          loadLessonContent(activeLesson.id);
+        } else {
+          showToast(data.message || 'Xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    function navigateLesson(dir) {
+      if (!activeLesson) return;
+      if (dir === 'prev' && activeLesson.prevLessonId) {
+        loadLessonContent(activeLesson.prevLessonId);
+      } else if (dir === 'next' && activeLesson.nextLessonId) {
+        loadLessonContent(activeLesson.nextLessonId);
+      }
+    }
+
+    // ==========================================
+    // QUIZ SYSTEM
+    // ==========================================
+    async function openQuizModal(quizId) {
+      try {
+        const res = await fetch(`/api/quizzes/${quizId}`, { credentials: 'include' });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          activeQuizData = data.quiz;
+          document.getElementById('quiz-modal-title').textContent = activeQuizData.title;
+          document.getElementById('quiz-modal-subtitle').textContent = `Vaqt: ${activeQuizData.timeLimitMinutes} daqiqa | O‘tish bali: ${activeQuizData.passingScore}%`;
+
+          const body = document.getElementById('quiz-modal-body');
+          body.innerHTML = `
+            <form onsubmit="handleSubmitQuiz(event, '${activeQuizData.id}')">
+              ${activeQuizData.questions.map((q, idx) => `
+                <div style="margin-bottom: 20px; padding: 14px; background: #f8fafc; border-radius: var(--radius-sm); border: 1px solid var(--slate-200);">
+                  <strong style="font-size: 14px; display: block; margin-bottom: 10px;">${idx + 1}. ${q.text}</strong>
+                  ${q.options.map((opt, optIdx) => `
+                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 13px; cursor: pointer;">
+                      <input type="radio" name="question_${q.id}" value="${optIdx}" required>
+                      <span>${opt}</span>
+                    </label>
+                  `).join('')}
+                </div>
+              `).join('')}
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Testni Yakunlash va Tekshirish</button>
+            </form>
+          `;
+
+          openModal('quizModal');
+        }
+      } catch (err) {
+        showToast('Testni yuklashda xatolik.', 'error');
+      }
+    }
+
+    async function handleSubmitQuiz(e, quizId) {
+      e.preventDefault();
+      const answers = [];
+
+      activeQuizData.questions.forEach((q) => {
+        const selected = document.querySelector(`input[name="question_${q.id}"]:checked`);
+        if (selected) {
+          answers.push({
+            questionId: q.id,
+            selectedIndex: parseInt(selected.value, 10),
+          });
+        }
+      });
+
+      try {
+        const res = await fetch(`/api/quizzes/${quizId}/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ answers }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          const resObj = data.result;
+          const body = document.getElementById('quiz-modal-body');
+
+          body.innerHTML = `
+            <div style="text-align: center; padding: 20px 0;">
+              <div style="width: 64px; height: 64px; border-radius: 50%; background: ${resObj.passed ? 'var(--success-light)' : 'var(--danger-light)'}; color: ${resObj.passed ? 'var(--success)' : 'var(--danger)'}; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 16px auto;">
+                ${resObj.passed ? '✓' : '✗'}
+              </div>
+              <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 6px;">
+                ${resObj.passed ? 'Tabriklaymiz! Testdan O‘tdingiz!' : 'Afsuski, o‘ta olmadingiz'}
+              </h2>
+              <p style="font-size: 16px; margin-bottom: 24px;">
+                Natijangiz: <strong style="color: ${resObj.passed ? 'var(--success)' : 'var(--danger)'}; font-size: 20px;">${resObj.score}%</strong> (O‘tish bali: ${resObj.passingScore}%)
+              </p>
+
+              <div style="text-align: left; margin-top: 20px;">
+                <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;">Savollar tahlili:</h4>
+                ${resObj.reviewDetails.map((rev, idx) => `
+                  <div style="padding: 12px; margin-bottom: 10px; border-radius: var(--radius-sm); border: 1px solid ${rev.isCorrect ? '#a7f3d0' : '#fecaca'}; background: ${rev.isCorrect ? '#f0fdf4' : '#fff5f5'}; font-size: 13px;">
+                    <strong>${idx + 1}. ${rev.questionText}</strong>
+                    <div style="margin-top: 4px; color: ${rev.isCorrect ? 'var(--success)' : 'var(--danger)'};">
+                      ${rev.isCorrect ? '✓ To‘g‘ri javob berildi' : `✗ Noto‘g‘ri. To‘g‘ri javob: ${rev.options[rev.correctAnswer]}`}
+                    </div>
+                    ${rev.explanation ? `<p style="font-size: 12px; color: var(--slate-500); margin-top: 4px;">Izoh: ${rev.explanation}</p>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+
+              <button class="btn btn-primary" style="margin-top: 16px;" onclick="closeModal('quizModal')">Yopish</button>
+            </div>
+          `;
+        } else {
+          showToast(data.message || 'Xatolik yuz berdi.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    // ==========================================
+    // DASHBOARD & CHART.JS
+    // ==========================================
+    async function loadDashboardData() {
+      try {
+        const res = await fetch('/api/analytics/dashboard', { credentials: 'include' });
+        const data = await res.json();
+
+        if (data.success) {
+          renderDashboardMetrics(data.stats);
+          renderDashboardCharts(data);
+
+          if (data.recentAuditLogs) {
+            renderAuditLogsTable(data.recentAuditLogs);
+          }
+        }
+
+        // If staff, also load submissions and backups
+        if (currentUser && ['ADMIN', 'INSTRUCTOR'].includes(currentUser.role)) {
+          loadSubmissionsList();
+          loadBackupsList();
+        }
+      } catch (err) {
+        console.error('Dashboard load error:', err);
+      }
+    }
+
+    function renderDashboardMetrics(stats) {
+      const container = document.getElementById('dashboard-stats-container');
+      if (!stats) return;
+
+      if (stats.totalStudents !== undefined) {
+        // Admin / Staff View
+        container.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-label">Jami Foydalanuvchilar</div>
+            <div class="stat-value">${stats.totalUsers}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Talabalar Soni</div>
+            <div class="stat-value" style="color: var(--primary);">${stats.totalStudents}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Faol Kurslar</div>
+            <div class="stat-value">${stats.totalCourses}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Jami Yozilishlar</div>
+            <div class="stat-value">${stats.totalEnrollments}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Berilgan Sertifikatlar</div>
+            <div class="stat-value" style="color: var(--success);">${stats.totalCertificates}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Testlardan O‘tish Foizi</div>
+            <div class="stat-value" style="color: var(--warning);">${stats.passRate}%</div>
+          </div>
+        `;
+      } else {
+        // Student View
+        container.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-label">Yozilgan Kurslar</div>
+            <div class="stat-value">${stats.enrolledCourses || 0}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tamomlangan Kurslar</div>
+            <div class="stat-value" style="color: var(--success);">${stats.completedCourses || 0}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Qo‘lga Kiritilgan Sertifikatlar</div>
+            <div class="stat-value" style="color: var(--primary);">${stats.certificatesEarned || 0}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">O‘tilgan Testlar</div>
+            <div class="stat-value">${stats.quizzesPassed || 0} / ${stats.totalQuizzesTaken || 0}</div>
+          </div>
+        `;
+      }
+    }
+
+    function renderDashboardCharts(data) {
+      // 1. Line/Bar Chart
+      const ctxEnroll = document.getElementById('chart-enrollments').getContext('2d');
+      if (enrollmentsChartInstance) enrollmentsChartInstance.destroy();
+
+      const enrollLabels = data.enrollmentTrend?.labels || data.courseProgressData?.labels || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+      const enrollValues = data.enrollmentTrend?.values || data.courseProgressData?.values || [5, 12, 19, 23, 30];
+
+      enrollmentsChartInstance = new Chart(ctxEnroll, {
+        type: 'line',
+        data: {
+          labels: enrollLabels,
+          datasets: [{
+            label: data.enrollmentTrend ? 'Yangi Yozilishlar' : 'Kurs Progressi (%)',
+            data: enrollValues,
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+            fill: true,
+            tension: 0.3,
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+
+      // 2. Categories Doughnut Chart
+      const ctxCat = document.getElementById('chart-categories').getContext('2d');
+      if (categoriesChartInstance) categoriesChartInstance.destroy();
+
+      const catLabels = data.categoryData?.labels || ['Dasturlash', 'Frontend', 'AI'];
+      const catValues = data.categoryData?.values || [1, 1, 1];
+
+      categoriesChartInstance = new Chart(ctxCat, {
+        type: 'doughnut',
+        data: {
+          labels: catLabels,
+          datasets: [{
+            data: catValues,
+            backgroundColor: ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#ec4899'],
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+
+    async function loadSubmissionsList() {
+      try {
+        const res = await fetch('/api/assignments/submissions', { credentials: 'include' });
+        const data = await res.json();
+        const tbody = document.getElementById('table-submissions-body');
+
+        if (data.success && data.submissions.length > 0) {
+          tbody.innerHTML = data.submissions.map((s) => `
+            <tr>
+              <td><strong>${s.user.name}</strong><br><small style="color: var(--slate-400);">${s.user.email}</small></td>
+              <td>${s.assignment.lesson.module.course.title}<br><small>${s.assignment.lesson.title}</small></td>
+              <td>${s.assignment.title}</td>
+              <td><span class="badge ${s.status === 'GRADED' ? 'badge-success' : 'badge-warning'}">${s.status}</span></td>
+              <td><strong>${s.score !== null ? s.score : '-'} / ${s.assignment.maxScore}</strong></td>
+              <td>
+                <button class="btn btn-outline btn-sm" onclick="promptGradeSubmission('${s.id}', ${s.assignment.maxScore})">Baholash</button>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--slate-400);">Hozircha topshirilgan vazifalar yo‘q.</td></tr>`;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function promptGradeSubmission(id, maxScore) {
+      const score = prompt(`Talabaga ball bering (0 dan ${maxScore} gacha):`);
+      if (score === null || score.trim() === '') return;
+      const feedback = prompt('Izoh yoki taqriz kiriting (ixtiyoriy):');
+
+      try {
+        const res = await fetch(`/api/assignments/submissions/${id}/grade`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ score: parseFloat(score), feedback }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast('Topshiriq baholandi!', 'success');
+          loadSubmissionsList();
+        } else {
+          showToast(data.message || 'Xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    function renderAuditLogsTable(logs) {
+      const tbody = document.getElementById('table-audit-body');
+      if (!logs || logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--slate-400);">Audit yozuvlari yo‘q.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = logs.map((log) => `
+        <tr>
+          <td><small>${new Date(log.createdAt).toLocaleString()}</small></td>
+          <td>${log.user ? `${log.user.name} (${log.user.role})` : '<span style="color: var(--slate-400);">Tizim</span>'}</td>
+          <td><span class="badge badge-primary">${log.action}</span></td>
+          <td>${log.entity}</td>
+          <td><code>${log.ipAddress || '-'}</code></td>
+          <td><small>${log.details ? log.details.substring(0, 40) + '...' : '-'}</small></td>
+        </tr>
+      `).join('');
+    }
+
+    // ==========================================
+    // SQLITE BACKUP TRIGGER
+    // ==========================================
+    async function triggerDatabaseBackup() {
+      try {
+        const res = await fetch('/api/backup/create', {
+          method: 'POST',
+          credentials: 'include',
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(`${data.message} (${data.backup.fileName})`, 'success');
+          loadBackupsList();
+        } else {
+          showToast(data.message || 'Backup yaratishda xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    async function loadBackupsList() {
+      try {
+        const res = await fetch('/api/backup/list', { credentials: 'include' });
+        const data = await res.json();
+        const tbody = document.getElementById('table-backups-body');
+
+        if (data.success && data.backups.length > 0) {
+          tbody.innerHTML = data.backups.map((b) => `
+            <tr>
+              <td><code>${b.fileName}</code></td>
+              <td>${b.sizeKb} KB</td>
+              <td>${new Date(b.createdAt).toLocaleString()}</td>
+              <td><span class="badge badge-success">Mavjud (Safe)</span></td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--slate-400);">Zaxira nusxalar mavjud emas. Yuqoridagi tugma orqali yarating.</td></tr>`;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // ==========================================
+    // CREATE COURSE (INSTRUCTOR / ADMIN)
+    // ==========================================
+    async function handleCreateCourseSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-course-title').value;
+      const category = document.getElementById('new-course-category').value;
+      const level = document.getElementById('new-course-level').value;
+      const description = document.getElementById('new-course-desc').value;
+      const thumbnail = document.getElementById('new-course-thumb').value;
+
+      try {
+        const res = await fetch('/api/courses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ title, category, level, description, thumbnail }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          closeModal('createCourseModal');
+          showToast('Yangi kurs yaratildi!', 'success');
+          await loadCourses();
+          switchView('catalog');
+        } else {
+          showToast(data.message || 'Kurs yaratishda xatolik.', 'error');
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    // ==========================================
+    // CERTIFICATE VERIFIER
+    // ==========================================
+    function openCertVerifyModal() {
+      openModal('certModal');
+    }
+
+    async function lookupCertificate() {
+      const code = document.getElementById('cert-search-code').value.trim();
+      if (!code) {
+        showToast('Sertifikat kodini kiriting.', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/certificates/verify/${encodeURIComponent(code)}`);
+        const data = await res.json();
+        const container = document.getElementById('cert-display-container');
+
+        if (res.ok && data.success && data.isValid) {
+          const cert = data.certificate;
+          container.innerHTML = `
+            <div class="certificate-card">
+              <div class="certificate-seal">🎓</div>
+              <h2 style="font-size: 26px; font-weight: 800; color: #78350f; margin-bottom: 4px;">TAMOMLANGANLIK SERTIFIKATI</h2>
+              <p style="font-size: 13px; color: #92400e; margin-bottom: 24px;">CodeMaster Professional Ta'lim Akademiyasi</p>
+
+              <p style="font-size: 14px; color: #78350f;">Ushbu sertifikat tasdiqlaydi:</p>
+              <h1 style="font-size: 32px; font-weight: 800; color: #1e1b4b; margin: 8px 0;">${cert.studentName}</h1>
+              <p style="font-size: 15px; color: #475569; max-width: 500px; margin: 0 auto 20px auto;">
+                <strong>"${cert.courseTitle}"</strong> o‘quv kursini barcha amaliy topshiriqlari va testlari bilan birga <strong>${cert.grade}</strong> natija bilan muvaffaqiyatli tamomladi.
+              </p>
+
+              <div style="display: flex; justify-content: space-around; margin-top: 32px; padding-top: 20px; border-top: 1px dashed #d97706; font-size: 13px; color: #78350f;">
+                <div>
+                  <strong>Ustoz:</strong> ${cert.instructorName}
+                </div>
+                <div>
+                  <strong>Berilgan Sana:</strong> ${new Date(cert.issuedAt).toLocaleDateString()}
+                </div>
+                <div>
+                  <strong>Kod:</strong> <code>${cert.code}</code>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 32px; color: var(--danger);">
+              <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin: 0 auto 12px auto;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              <h4 style="font-weight: 700;">Haqiqiy emas yoki topilmadi</h4>
+              <p style="font-size: 13px;">"${code}" kodi ostida berilgan rasmiy sertifikat mavjud emas.</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        showToast('Server xatosi.', 'error');
+      }
+    }
+
+    // ==========================================
+    // VIEW SWITCHER
+    // ==========================================
+    function switchView(viewName) {
+      document.getElementById('view-catalog').style.display = viewName === 'catalog' ? 'block' : 'none';
+      document.getElementById('view-my-courses').style.display = viewName === 'my-courses' ? 'block' : 'none';
+      document.getElementById('view-classroom').style.display = viewName === 'classroom' ? 'block' : 'none';
+      document.getElementById('view-dashboard').style.display = viewName === 'dashboard' ? 'block' : 'none';
+
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      const activeNavBtn = document.getElementById(`nav-${viewName}`);
+      if (activeNavBtn) activeNavBtn.classList.add('active');
+
+      if (viewName === 'dashboard') {
+        loadDashboardData();
+      } else if (viewName === 'my-courses') {
+        loadMyEnrolledCourses();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function loadMyEnrolledCourses() {
+      try {
+        const res = await fetch('/api/enrollments/my', { credentials: 'include' });
+        const data = await res.json();
+        const container = document.getElementById('my-course-list-container');
+
+        if (data.success && data.enrollments.length > 0) {
+          container.innerHTML = data.enrollments.map((enr) => `
+            <div class="course-card">
+              <img class="course-thumb" src="${enr.course.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'}">
+              <div class="course-body">
+                <span class="badge badge-primary" style="align-self: flex-start; margin-bottom: 8px;">${enr.course.category}</span>
+                <h3 class="course-title">${enr.course.title}</h3>
+                <div style="margin: 16px 0;">
+                  <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                    <span>Progress:</span>
+                    <strong>${enr.progressPercent}%</strong>
+                  </div>
+                  <div style="background: var(--slate-100); height: 8px; border-radius: 999px; overflow: hidden;">
+                    <div style="background: var(--success); height: 100%; width: ${enr.progressPercent}%;"></div>
+                  </div>
+                </div>
+                <div class="course-footer">
+                  <span>${enr.isCompleted ? '🎓 Tamomlangan' : '⏳ O‘rganilmoqda'}</span>
+                  <button class="btn btn-success btn-sm" onclick="openClassroom('${enr.course.slug}')">Darsni Davom Ettirish</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--slate-400);">Hozircha birorta kursga yozilmagansiz.</div>`;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // ==========================================
+    // SIMPLE MARKDOWN FORMATTER
+    // ==========================================
+    function formatMarkdown(text) {
+      if (!text) return '';
+      let escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // Code blocks ```lang\ncode\n```
+      escaped = escaped.replace(/```([\s\S]*?)```/g, (match, p1) => {
+        return `<pre><code>${p1.trim()}</code></pre>`;
+      });
+
+      // Inline code `code`
+      escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Headings
+      escaped = escaped.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      escaped = escaped.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      escaped = escaped.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+      // Bold & Italic
+      escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      escaped = escaped.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+      // Paragraphs
+      return escaped.replace(/\n\n+/g, '<p></p>');
+    }
+  </script>
+</body>
+</html>

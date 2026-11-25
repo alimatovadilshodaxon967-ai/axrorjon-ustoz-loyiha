@@ -1,0 +1,19 @@
+[build]
+  publish = "frontend"
+  functions = "netlify/functions"
+  command = "npx prisma generate --schema=backend/prisma/schema.prisma && npx prisma db push --schema=backend/prisma/schema.prisma --accept-data-loss && SEED_IF_EMPTY=true node backend/prisma/seed.js"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@prisma/client", "prisma", "pg", "connect-pg-simple", "bcryptjs"]
+  included_files = ["backend/prisma/schema.prisma", "node_modules/.prisma/**", "node_modules/@prisma/client/**"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
