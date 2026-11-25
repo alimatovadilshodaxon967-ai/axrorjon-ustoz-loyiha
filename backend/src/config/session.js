@@ -2,7 +2,16 @@ const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
 
-const dbUrl = process.env.NETLIFY_DB_URL || process.env.DATABASE_URL;
+let dbUrl = process.env.NETLIFY_DB_URL || process.env.DATABASE_URL;
+if (!dbUrl) {
+  try {
+    const { getConnectionString } = require('@netlify/database');
+    dbUrl = getConnectionString();
+    if (dbUrl) process.env.NETLIFY_DB_URL = dbUrl;
+  } catch {
+    // Ignore locally
+  }
+}
 
 let store;
 if (dbUrl) {
