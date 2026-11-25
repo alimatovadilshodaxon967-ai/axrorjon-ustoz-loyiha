@@ -1,8 +1,10 @@
+import { createRequire } from 'node:module';
 import { getConnectionString } from '@netlify/database';
-import serverless from 'serverless-http';
-import app from '../../backend/server.js';
 
-const handler = serverless(app);
+const require = createRequire(import.meta.url);
+const serverless = require('serverless-http');
+
+let handler;
 
 export default async (req, context) => {
   if (!process.env.NETLIFY_DB_URL) {
@@ -12,6 +14,11 @@ export default async (req, context) => {
     } catch {
       // Fallback to existing env var
     }
+  }
+
+  if (!handler) {
+    const app = require('../../backend/server.js');
+    handler = serverless(app);
   }
 
   const url = new URL(req.url);
